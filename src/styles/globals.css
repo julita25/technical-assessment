@@ -1,4 +1,7 @@
 @import './fonts.css';
+@import '~rsuite/dist/rsuite.min.css';
+
+
 
 @tailwind base;
 @tailwind components;
