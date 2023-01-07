@@ -1,12 +1,24 @@
-import React, { useState } from "react";
-import { bool, func, instanceOf } from "prop-types";
+import React, { useEffect, useState } from "react";
+import { instanceOf, func, bool } from "prop-types";
 import { Button } from "rsuite";
 
 function QuizQuestion({
-  item, prev, next, isComplete
+  item, prev, next, selectedAnswers, isLastQuestion
 }) {
   const { id, question, choices } = item;
   const [selectedOption, setSelectedOption] = useState();
+
+  useEffect(() => {
+    setSelectedOption();
+  }, [item]);
+
+  const handleNext = () => {
+    const updatedAnswer = { ...selectedAnswers };
+    updatedAnswer[id] = selectedOption;
+
+    next(updatedAnswer);
+  };
+
   return (
     <div className="space-y-10 flex flex-col justify-center items-center">
       <div className="w-2/3 space-y-5">
@@ -16,7 +28,7 @@ function QuizQuestion({
             const sel = index + 1;
             return (
               <div
-                key={id}
+                key={sel}
                 onClick={() => setSelectedOption(sel)}
                 onKeyDown={() => setSelectedOption(sel)}
                 role="button"
@@ -32,13 +44,13 @@ function QuizQuestion({
       <div className="flex flex-col space-y-2">
         {Boolean(next) && (
           <Button
-            // onClick={handleNext}
+            onClick={handleNext}
             disabled={!selectedOption}
             appearance="primary"
             color="blue"
             className="bg-blue-600"
           >
-            Next question
+            {isLastQuestion ? "Submit" : "Next question"}
           </Button>
         )}
         {Boolean(prev) && (
@@ -50,17 +62,6 @@ function QuizQuestion({
             Prev question
           </Button>
         )}
-        {Boolean(isComplete) && (
-          <Button
-            // onClick={handleNext}
-            disabled={!selectedOption}
-            appearance="primary"
-            color="blue"
-            className="bg-blue-600"
-          >
-            Submit answers
-          </Button>
-        )}
       </div>
     </div>
   );
@@ -68,9 +69,10 @@ function QuizQuestion({
 
 QuizQuestion.propTypes = {
   next: func.isRequired,
-  prev: bool.isRequired,
-  isComplete: bool.isRequired,
-  item: instanceOf(Object).isRequired
+  prev: func.isRequired,
+  isLastQuestion: bool.isRequired,
+  item: instanceOf(Object).isRequired,
+  selectedAnswers: instanceOf(Object).isRequired
 };
 
 export default QuizQuestion;
