@@ -70,9 +70,13 @@ function QuizQuestion({
 QuizQuestion.propTypes = {
   next: func.isRequired,
   prev: func.isRequired,
-  isLastQuestion: bool.isRequired,
+  isLastQuestion: bool,
   item: instanceOf(Object).isRequired,
   selectedAnswers: instanceOf(Object).isRequired
+};
+
+QuizQuestion.defaultProps = {
+  isLastQuestion: false
 };
 
 export default QuizQuestion;
