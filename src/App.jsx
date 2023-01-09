@@ -1,35 +1,84 @@
-import React from "react";
-import { useQuery } from "react-query";
+/* eslint-disable no-else-return */
+import React, { useState } from "react";
 import { Button, Loader } from "rsuite";
 import Quiz from "./components/Quiz";
+import {
+  ACCESS_TOKEN, BASE_URL, ERROR_THEME_ID, THEME_ID
+} from "./constants/apiConstants";
 
-const THEME_ID = "63a88cf1e774d167cd92c06f";
-const BASE_URL = "https://6ae09492-3444-4d49-9e93-21be9e6b4759.mock.pstmn.io";
+const App = () => {
+  const [quizData, setQuizData] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
 
-function App() {
-  const fetchQuizData = async () => {
-    const res = await fetch(`${BASE_URL}/user/quiz/random?themeId=${THEME_ID}`, {
+  const fetchQuizData = async (token, themeId) => {
+    setIsLoading(true);
+    const res = await fetch(`${BASE_URL}/user/quiz/random?themeId=${themeId}`, {
       method: "GET",
       headers: {
-        Accept: "application/json"
+        Accept: "application/json",
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`
       }
     });
     if (res?.ok) {
-      console.log("here");
       const response = await res.json();
-      return response;
+      setQuizData(response);
+      setError("");
+      setIsLoading(false);
+    } else {
+      setError(new Error("No more questions to take"));
+      setIsLoading(false);
     }
-    return {};
   };
 
-  const { data: quizData, isLoading } = useQuery("quiz", fetchQuizData);
+  const handleStartQuiz = () => {
+    setShowQuiz(true);
+    fetchQuizData(ACCESS_TOKEN, THEME_ID);
+  };
 
-  if (isLoading) return <Loader />;
+  const handleStartQuizWithError = () => {
+    setShowQuiz(true);
+    fetchQuizData(ACCESS_TOKEN, ERROR_THEME_ID);
+  };
+
+  if (isLoading) return <Loader center size="md" />;
 
   return (
-    <div className="p-10">
-      <Button className="text-blue-500 text-xl">Click here to see your available tests</Button>
-      <Quiz quizData={quizData} />
+    <div className="flex flex-col h-screen w-full justify-start items-center p-10">
+      <div className="mt-16">
+        {!showQuiz
+          ? (
+            <div className="space-y-10 flex flex-col justify-start items-center">
+              <div className="text-xl text-blue-500">
+                Welcome! Complete the below quiz and submit your answers!
+              </div>
+              <div>
+                <Button
+                  className="bg-green-500 w-44"
+                  appearance="primary"
+                  color="green"
+                  onClick={handleStartQuiz}
+                >
+                  Start quiz
+                </Button>
+              </div>
+              <div>
+                <Button
+                  className="bg-blue-600 w-44"
+                  appearance="primary"
+                  color="blue"
+                  onClick={handleStartQuizWithError}
+                >
+                  Start unavailable quiz
+                </Button>
+              </div>
+            </div>
+          )
+          : <Quiz quizData={quizData} error={error.message} />}
+      </div>
+      <div />
     </div>
   );
 }
