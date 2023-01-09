@@ -2,7 +2,7 @@
 import React from "react";
 import { instanceOf, number } from "prop-types";
 
-function Carousel({ steps, currentIndex }) {
+const Carousel = ({ steps, currentIndex }) => {
   return (
     <div className="h-full flex flex-col w-full">
       {
