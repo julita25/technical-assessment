@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { instanceOf, func, bool } from "prop-types";
+import {
+  instanceOf, func, bool, oneOfType
+} from "prop-types";
 import { Button } from "rsuite";
+import { ERROR_QUIZ_ID } from "../constants/apiConstants";
 
-function QuizQuestion({
+const QuizQuestion = ({
   item, prev, next, selectedAnswers, isLastQuestion
-}) {
+}) => {
   const { id, question, choices } = item;
   const [selectedOption, setSelectedOption] = useState();
 
@@ -12,11 +15,10 @@ function QuizQuestion({
     setSelectedOption();
   }, [item]);
 
-  const handleNext = () => {
+  const handleNext = (quizId) => {
     const updatedAnswer = { ...selectedAnswers };
     updatedAnswer[id] = selectedOption;
-
-    next(updatedAnswer);
+    next(updatedAnswer, quizId);
   };
 
   return (
@@ -44,13 +46,24 @@ function QuizQuestion({
       <div className="flex flex-col space-y-2">
         {Boolean(next) && (
           <Button
-            onClick={handleNext}
+            onClick={() => handleNext(null)}
             disabled={!selectedOption}
             appearance="primary"
             color="blue"
             className="bg-blue-600"
           >
             {isLastQuestion ? "Submit" : "Next question"}
+          </Button>
+        )}
+        {isLastQuestion && (
+          <Button
+            onClick={() => handleNext(ERROR_QUIZ_ID)}
+            disabled={!selectedOption}
+            appearance="primary"
+            color="blue"
+            className="bg-blue-600"
+          >
+            Submit answers again
           </Button>
         )}
         {Boolean(prev) && (
@@ -69,7 +82,7 @@ function QuizQuestion({
 
 QuizQuestion.propTypes = {
   next: func.isRequired,
-  prev: func.isRequired,
+  prev: oneOfType([bool, func]).isRequired,
   isLastQuestion: bool,
   item: instanceOf(Object).isRequired,
   selectedAnswers: instanceOf(Object).isRequired
