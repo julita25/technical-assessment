@@ -78,7 +78,7 @@ const QuizQuestion = ({
       </div>
     </div>
   );
-}
+};
 
 QuizQuestion.propTypes = {
   next: func.isRequired,
