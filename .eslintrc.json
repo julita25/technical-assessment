@@ -1,52 +1,52 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true,
-        "jest/globals": true
-    },
-    "extends": [
-        "plugin:react/recommended",
-        "plugin:jest/recommended",
-        "airbnb"
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest/globals": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:jest/recommended",
+    "airbnb"
+  ],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "jest"
+  ],
+  "rules": {
+    "semi": [
+      "error",
+      "always"
     ],
-    "overrides": [],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react",
-        "jest"
+    "quotes": [
+      "error",
+      "double"
     ],
-    "rules": {
-        "semi": [
-            "error",
-            "always"
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "comma-dangle": [
-            "error",
-            "never"
-        ],
-        "import/prefer-default-export": "off",
-        "react/function-component-definition": [
-            2,
-            {
-                "namedComponents": "arrow-function"
-            }
-        ],
-    },
-    "settings": {
-        "import/resolver": {
-            "node": {
-                "moduleDirectory": [
-                    "node_modules",
-                    "."
-                ]
-            }
-        }
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "import/prefer-default-export": "off",
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function"
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": [
+          "node_modules",
+          "."
+        ]
+      }
     }
+  }
 }

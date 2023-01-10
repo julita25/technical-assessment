@@ -30,7 +30,6 @@ const Quiz = ({ quizData, error }) => {
     }
   };
 
-
   const onNextStep = (selected) => {
     setCurrentIndex(currentIndex + 1);
     setAnswers(selected);
@@ -70,15 +69,15 @@ const Quiz = ({ quizData, error }) => {
         >
           {error || submitError.message}
         </Notification>
-        <Button
-          className="bg-blue-600 w-max"
-          color="blue"
-          appearance="primary"
-        >
-          <a href="/" rel="noreferrer" className="hover:text-white">
+        <a href="/" rel="noreferrer" className="hover:text-white hover:no-underline">
+          <Button
+            className="bg-blue-600 w-max"
+            color="blue"
+            appearance="primary"
+          >
             Return to main page
-          </a>
-        </Button>
+          </Button>
+        </a>
       </div>
     );
   }
@@ -99,7 +98,7 @@ const Quiz = ({ quizData, error }) => {
       <Carousel steps={steps} currentIndex={currentIndex} />
     </>
   );
-}
+};
 
 Quiz.propTypes = {
   quizData: instanceOf(Object),

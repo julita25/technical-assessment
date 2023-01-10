@@ -5,6 +5,7 @@ import Quiz from "./components/Quiz";
 import {
   ACCESS_TOKEN, BASE_URL, ERROR_THEME_ID, THEME_ID
 } from "./constants/apiConstants";
+import "./styles/globals.css";
 
 const App = () => {
   const [quizData, setQuizData] = useState("");
@@ -81,6 +82,6 @@ const App = () => {
       <div />
     </div>
   );
-}
+};
 
 export default App;
